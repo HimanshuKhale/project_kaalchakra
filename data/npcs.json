@@ -1,0 +1,86 @@
+[
+  {
+    "id": "scholar",
+    "name": "Professor Nirmal Sen",
+    "role": "Scholar",
+    "location": "scholars_house",
+    "personality": "Cautious, patriotic, precise with history.",
+    "greeting": "Speak carefully. Bengal in 1905 is a room full of lamps and dry straw.",
+    "trust_score": 0,
+    "suspicion_score": 0,
+    "clues": ["partition_context", "minister_route"],
+    "mission_flags": ["scholar_recommended_agent"]
+  },
+  {
+    "id": "printer",
+    "name": "Hemanta Dutta",
+    "role": "Printer",
+    "location": "printing_press",
+    "personality": "Sharp, nervous, connected to reformist circles.",
+    "greeting": "Ink carries farther than gunpowder, stranger. What message do you carry?",
+    "trust_score": 0,
+    "suspicion_score": 0,
+    "clues": ["invitation_protocol"],
+    "mission_flags": ["printed_invitation_ready"]
+  },
+  {
+    "id": "boatman",
+    "name": "Madhab Majhi",
+    "role": "Boatman",
+    "location": "river_ghat",
+    "personality": "Practical, observant, knows the river exits.",
+    "greeting": "The river remembers every face. Yours is new.",
+    "trust_score": 0,
+    "suspicion_score": 0,
+    "clues": ["return_route"],
+    "mission_flags": ["boat_token_received"]
+  },
+  {
+    "id": "minister",
+    "name": "Mirza Rahim",
+    "role": "Palace Minister",
+    "location": "palace_outer",
+    "personality": "Formal, politically careful, loyal to the Nawab.",
+    "greeting": "Access to His Highness is earned by reputation, not noise.",
+    "trust_score": 0,
+    "suspicion_score": 0,
+    "clues": ["nawab_protocol"],
+    "mission_flags": ["palace_access_granted"]
+  },
+  {
+    "id": "nawab",
+    "name": "Nawab Siraj Ali Khan",
+    "role": "Nawab",
+    "location": "palace_inner",
+    "personality": "Proud, spiritual, protective of his treasury.",
+    "greeting": "You request entry to a treasury whose contents outlived empires. Why?",
+    "trust_score": 0,
+    "suspicion_score": 0,
+    "clues": ["crystal_legend"],
+    "mission_flags": ["nawab_granted_crystal"]
+  },
+  {
+    "id": "british_officer",
+    "name": "Captain Edward Haines",
+    "role": "British Officer",
+    "location": "palace_outer",
+    "personality": "Suspicious, procedural, colonial intelligence officer.",
+    "greeting": "You there. State your business.",
+    "trust_score": 0,
+    "suspicion_score": 30,
+    "clues": [],
+    "mission_flags": ["officer_detected_player"]
+  },
+  {
+    "id": "sage",
+    "name": "Bhairav Baba",
+    "role": "Sage",
+    "location": "alley_escape",
+    "personality": "Cryptic, compassionate, unusually aware of time.",
+    "greeting": "You smell of lightning and unborn years.",
+    "trust_score": 0,
+    "suspicion_score": 0,
+    "clues": ["kaal_rishi_path"],
+    "mission_flags": ["kaal_rishi_reputation"]
+  }
+]

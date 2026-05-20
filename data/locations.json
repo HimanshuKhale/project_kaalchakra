@@ -1,0 +1,66 @@
+[
+  {
+    "id": "river_ghat",
+    "name": "River Ghat",
+    "pos": [-40, -30, 0],
+    "scale": [5, 8, 0.25],
+    "npc_positions": {
+      "boatman": [-42, -32, 0]
+    }
+  },
+  {
+    "id": "bazaar",
+    "name": "Bazaar",
+    "pos": [-12, -16, 0],
+    "scale": [12, 8, 0.35],
+    "npc_positions": {
+      "printer": [-6, -12, 0]
+    }
+  },
+  {
+    "id": "scholars_house",
+    "name": "Scholar's House",
+    "pos": [-25, 14, 0],
+    "scale": [5, 5, 1.8],
+    "npc_positions": {
+      "scholar": [-23, 12, 0]
+    }
+  },
+  {
+    "id": "printing_press",
+    "name": "Printing Press",
+    "pos": [3, -28, 0],
+    "scale": [5, 4, 1.6],
+    "npc_positions": {
+      "printer": [2, -25, 0]
+    }
+  },
+  {
+    "id": "palace_outer",
+    "name": "Palace Outer Court",
+    "pos": [24, 18, 0],
+    "scale": [10, 7, 0.35],
+    "npc_positions": {
+      "minister": [18, 16, 0],
+      "british_officer": [17, 14, 0]
+    }
+  },
+  {
+    "id": "palace_inner",
+    "name": "Palace Inner Wing",
+    "pos": [34, 28, 0],
+    "scale": [8, 6, 2.2],
+    "npc_positions": {
+      "nawab": [33, 29, 0]
+    }
+  },
+  {
+    "id": "alley_escape",
+    "name": "Alley Escape Route",
+    "pos": [12, 40, 0],
+    "scale": [3, 12, 1.2],
+    "npc_positions": {
+      "sage": [8, 47, 0]
+    }
+  }
+]

@@ -1,0 +1,18 @@
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
+SAVE_PATH = BASE_DIR / "savegame.json"
+
+WINDOW_TITLE = "Project Kaalchakra: Mission Bengal 1905"
+WINDOW_SIZE = (1280, 720)
+
+PLAYER_START_POS = (0, 0, 1.8)
+PLAYER_SPEED = 7.0
+PLAYER_SPRINT_SPEED = 11.0
+MOUSE_SENSITIVITY = 0.14
+INTERACTION_DISTANCE = 4.0
+
+RIPPLE_COLLAPSE = 100
+SUSPICION_CAPTURE = 100
+MISSION_TIME_LIMIT = 1800.0

@@ -1,0 +1,101 @@
+[
+  {
+    "id": "arrival_at_ghat",
+    "title": "Arrival at the Ghat",
+    "description": "Orient yourself after the KAALCHAKRA jump.",
+    "objectives": [{"text": "Reach the river ghat and speak to the boatman", "flag": "arrived_at_ghat"}],
+    "required_flags": [],
+    "completion_flags": ["arrived_at_ghat"],
+    "next_mission": "gather_bazaar_clues"
+  },
+  {
+    "id": "gather_bazaar_clues",
+    "title": "Gather Bazaar Clues",
+    "description": "Find a social route into the palace.",
+    "objectives": [{"text": "Visit the bazaar and printing press", "flag": "printer_agrees"}],
+    "required_flags": [],
+    "completion_flags": ["printer_agrees"],
+    "next_mission": "speak_to_scholar"
+  },
+  {
+    "id": "speak_to_scholar",
+    "title": "Speak to the Scholar",
+    "description": "Earn Professor Sen's trust.",
+    "objectives": [{"text": "Discuss 1905 Bengal without revealing the future", "flag": "scholar_recommended_agent"}],
+    "required_flags": [],
+    "completion_flags": ["scholar_recommended_agent"],
+    "next_mission": "get_palace_access"
+  },
+  {
+    "id": "get_palace_access",
+    "title": "Get Palace Access",
+    "description": "Use print and reputation to reach the minister.",
+    "objectives": [{"text": "Get a palace pass from Minister Rahim", "flag": "palace_access_granted"}],
+    "required_flags": ["printed_invitation_ready"],
+    "completion_flags": ["palace_access_granted"],
+    "next_mission": "avoid_british_officer"
+  },
+  {
+    "id": "avoid_british_officer",
+    "title": "Avoid Captain Haines",
+    "description": "Cross the palace court without drawing colonial attention.",
+    "objectives": [{"text": "Enter the palace outer court while keeping suspicion below 100", "flag": "entered_palace_outer"}],
+    "required_flags": [],
+    "completion_flags": ["entered_palace_outer"],
+    "next_mission": "first_nawab_meeting"
+  },
+  {
+    "id": "first_nawab_meeting",
+    "title": "First Nawab Meeting",
+    "description": "Ask for the crystal and survive the refusal.",
+    "objectives": [{"text": "Meet the Nawab and accept the first failure", "flag": "first_meeting_failed"}],
+    "required_flags": [],
+    "completion_flags": ["first_meeting_failed"],
+    "next_mission": "escape_palace"
+  },
+  {
+    "id": "escape_palace",
+    "title": "Escape the Palace",
+    "description": "Use the alley route after the failed meeting.",
+    "objectives": [{"text": "Find the alley escape route", "flag": "sage_guidance_received"}],
+    "required_flags": [],
+    "completion_flags": ["sage_guidance_received"],
+    "next_mission": "meet_sage"
+  },
+  {
+    "id": "meet_sage",
+    "title": "Meet the Sage",
+    "description": "Learn how to become a custodian instead of a thief.",
+    "objectives": [{"text": "Earn the sage's trust", "flag": "kaal_rishi_reputation"}],
+    "required_flags": [],
+    "completion_flags": ["kaal_rishi_reputation"],
+    "next_mission": "build_kaal_rishi_reputation"
+  },
+  {
+    "id": "build_kaal_rishi_reputation",
+    "title": "Build Kaal Rishi Reputation",
+    "description": "Keep your reputation controlled and return to the court.",
+    "objectives": [{"text": "Return to the Nawab with sage-backed restraint", "flag": "returned_to_inner_wing"}],
+    "required_flags": [],
+    "completion_flags": ["returned_to_inner_wing"],
+    "next_mission": "final_nawab_negotiation"
+  },
+  {
+    "id": "final_nawab_negotiation",
+    "title": "Final Nawab Negotiation",
+    "description": "Convince the Nawab to release the Shakti Crystal.",
+    "objectives": [{"text": "Receive permission and collect the Shakti Crystal", "flag": "crystal_acquired"}],
+    "required_flags": ["kaal_rishi_reputation"],
+    "completion_flags": ["crystal_acquired"],
+    "next_mission": "return_to_present"
+  },
+  {
+    "id": "return_to_present",
+    "title": "Return to Present",
+    "description": "Return to the ghat extraction point.",
+    "objectives": [{"text": "Reach the river ghat with the crystal", "flag": "returned_to_present"}],
+    "required_flags": [],
+    "completion_flags": ["returned_to_present"],
+    "next_mission": null
+  }
+]

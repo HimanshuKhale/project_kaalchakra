@@ -1,0 +1,132 @@
+{
+  "boatman": {
+    "text": "You arrived with no luggage and eyes full of storm. Are you a trader, messenger, or fugitive?",
+    "options": [
+      {
+        "text": "A messenger looking for safe routes through the town.",
+        "reply": "Then remember the ghat. When all roads close, water remains.",
+        "effects": {"trust": 12, "ripple": 0, "unlock_clues": ["return_route"], "set_flags": ["arrived_at_ghat"], "add_items": ["Boat Token"]}
+      },
+      {
+        "text": "I serve a future India that needs a hidden relic.",
+        "reply": "Future? Say such things near soldiers and you will vanish before sunset.",
+        "effects": {"trust": -5, "suspicion": 18, "ripple": 18}
+      },
+      {
+        "text": "Only a trader. I need no questions.",
+        "reply": "Traders usually carry goods. Still, the river does not argue.",
+        "effects": {"trust": -3, "suspicion": 4, "ripple": 0}
+      }
+    ]
+  },
+  "scholar": {
+    "text": "Tell me, stranger, why is Bengal politically sensitive this year?",
+    "options": [
+      {
+        "text": "The partition may weaken political unity and divide communities.",
+        "reply": "You understand the wound without shouting. I will recommend you quietly.",
+        "effects": {"trust": 24, "ripple": 0, "unlock_clues": ["partition_context", "minister_route"], "set_flags": ["scholar_understands_agent"]}
+      },
+      {
+        "text": "The British are fools and must be destroyed.",
+        "reply": "Anger is easy to plant and hard to uproot. Lower your voice.",
+        "effects": {"trust": -6, "suspicion": 15, "ripple": 10}
+      },
+      {
+        "text": "I know the future and Bengal will suffer greatly.",
+        "reply": "If this is madness, it is dangerous. If truth, more dangerous.",
+        "effects": {"trust": 4, "suspicion": 30, "ripple": 25}
+      },
+      {
+        "text": "I am only a trader.",
+        "reply": "Then you are an unconvincing one.",
+        "effects": {"trust": -5, "ripple": 0}
+      }
+    ]
+  },
+  "printer": {
+    "text": "The palace reads symbols before it reads words. What should I print for you?",
+    "options": [
+      {
+        "text": "A respectful invitation citing Professor Sen's recommendation.",
+        "reply": "A clean line of ink opens more doors than a loud fist.",
+        "effects": {"trust": 18, "ripple": 0, "unlock_clues": ["invitation_protocol"], "set_flags": ["printer_agrees"]}
+      },
+      {
+        "text": "A forged imperial order from London.",
+        "reply": "That would draw Captain Haines like a match in darkness.",
+        "effects": {"trust": -10, "suspicion": 24, "ripple": 15, "enemy_suspicion": 10}
+      },
+      {
+        "text": "A prophecy naming me Kaal Rishi.",
+        "reply": "Tempting theatre. Dangerous theatre.",
+        "effects": {"trust": 5, "suspicion": 8, "ripple": 14, "set_flags": ["rumor_seeded"]}
+      }
+    ]
+  },
+  "minister": {
+    "text": "Why should the Nawab receive a stranger during such tense days?",
+    "options": [
+      {
+        "text": "I carry a scholar's recommendation and seek only a private historical audience.",
+        "reply": "Measured words. I can arrange a guarded audience.",
+        "effects": {"trust": 22, "suspicion": -4, "ripple": 0, "unlock_clues": ["nawab_protocol"]}
+      },
+      {
+        "text": "Because his treasury contains an object too dangerous for this era.",
+        "reply": "You speak like a thief wearing a priest's shawl.",
+        "effects": {"trust": -8, "suspicion": 18, "ripple": 12}
+      },
+      {
+        "text": "Deny me and history itself may punish you.",
+        "reply": "Threats do not age well in palaces.",
+        "effects": {"trust": -18, "suspicion": 28, "ripple": 22}
+      }
+    ]
+  },
+  "nawab": {
+    "text": "The Shakti Crystal is no trinket. Why should I surrender it?",
+    "options": [
+      {
+        "text": "I ask first and fail first. Your caution proves you are its rightful guardian.",
+        "reply": "You accept refusal with discipline. Leave before soldiers notice you.",
+        "effects": {"trust": 12, "suspicion": 8, "ripple": 0, "set_flags": ["first_nawab_audience"]}
+      },
+      {
+        "text": "A sage says I must become Kaal Rishi, not a thief.",
+        "reply": "The old name returns. If your restraint is true, the crystal may travel with you.",
+        "effects": {"trust": 42, "suspicion": -10, "ripple": 8, "set_flags": ["nawab_respects_agent"]}
+      },
+      {
+        "text": "I will take it whether you bless the act or not.",
+        "reply": "Then you will meet the prison under my court.",
+        "effects": {"trust": -35, "suspicion": 35, "ripple": 30, "enemy_suspicion": 20}
+      },
+      {
+        "text": "In the future, this crystal powers KAALCHAKRA.",
+        "reply": "You reveal too much for a man asking history to stay calm.",
+        "effects": {"trust": 5, "suspicion": 20, "ripple": 35}
+      }
+    ]
+  },
+  "sage": {
+    "text": "You failed because you asked as an agent. Ask again as a custodian. How will you build trust?",
+    "options": [
+      {
+        "text": "Protect local dignity, avoid prophecy, and let people choose.",
+        "reply": "Good. A controlled reputation casts a small shadow.",
+        "effects": {"trust": 28, "ripple": 4, "unlock_clues": ["kaal_rishi_path"], "set_flags": ["sage_guidance_received"]}
+      },
+      {
+        "text": "Spread miracles so the Nawab fears me.",
+        "reply": "Fear multiplies ripples.",
+        "effects": {"trust": -12, "suspicion": 10, "ripple": 28, "set_flags": ["reckless_miracle_rumor"]}
+      },
+      {
+        "text": "Tell everyone I am from the future.",
+        "reply": "Then you are not a traveler. You are a storm.",
+        "effects": {"trust": -20, "suspicion": 24, "ripple": 38}
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "silent_success",
+    "title": "Silent Success",
+    "result": "The Shakti Crystal is recovered with minimal historical disturbance."
+  },
+  {
+    "id": "golden_ripple",
+    "title": "Golden Ripple",
+    "result": "The crystal is recovered, and a small legend forms around your restraint."
+  },
+  {
+    "id": "chaotic_timeline",
+    "title": "Chaotic Timeline",
+    "result": "You recovered the crystal, but the timeline buckled under your choices."
+  },
+  {
+    "id": "colonial_capture",
+    "title": "Colonial Capture",
+    "result": "Captain Haines exposes the operation before you can complete the extraction."
+  },
+  {
+    "id": "failed_mission",
+    "title": "Failed Mission",
+    "result": "The mission window closes without a clean recovery."
+  }
+]
