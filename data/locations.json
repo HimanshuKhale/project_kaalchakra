@@ -23,7 +23,7 @@
     "pos": [-25, 14, 0],
     "scale": [5, 5, 1.8],
     "npc_positions": {
-      "scholar": [-23, 12, 0]
+      "scholar": [-18, 12, 0]
     }
   },
   {
@@ -32,7 +32,7 @@
     "pos": [3, -28, 0],
     "scale": [5, 4, 1.6],
     "npc_positions": {
-      "printer": [2, -25, 0]
+      "printer": [9, -25, 0]
     }
   },
   {

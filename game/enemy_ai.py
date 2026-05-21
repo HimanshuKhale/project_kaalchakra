@@ -18,10 +18,12 @@ class BritishOfficerAI:
         self.detect_angle = 62.0
         self.cooldown = 0.0
 
-    def update(self, dt: float, player_pos: Vec3, is_player_crouching: bool) -> bool:
+    def update(self, dt: float, player_pos: Vec3, is_player_crouching: bool, line_of_sight_clear=None) -> bool:
         self._patrol(dt)
         self.cooldown = max(0.0, self.cooldown - dt)
         detected = self._can_see(player_pos, is_player_crouching)
+        if detected and line_of_sight_clear is not None:
+            detected = line_of_sight_clear(self.node.get_pos(), player_pos)
         if detected and self.cooldown <= 0:
             self.state.add_suspicion(14 if is_player_crouching else 24)
             self.state.flags.add("officer_detected_player")

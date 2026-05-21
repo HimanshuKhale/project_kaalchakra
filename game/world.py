@@ -2,10 +2,34 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from dataclasses import dataclass
 
 from panda3d.core import AmbientLight, DirectionalLight, TextNode, Vec3, Vec4
 
 from game.npc import NPC
+
+
+@dataclass(frozen=True)
+class Blocker:
+    name: str
+    min_x: float
+    max_x: float
+    min_y: float
+    max_y: float
+
+    def contains(self, point: Vec3, padding: float = 0.65) -> bool:
+        return (
+            self.min_x - padding <= point.x <= self.max_x + padding
+            and self.min_y - padding <= point.y <= self.max_y + padding
+        )
+
+    def intersects_segment(self, start: Vec3, end: Vec3, steps: int = 24) -> bool:
+        for index in range(1, steps):
+            t = index / steps
+            point = start + (end - start) * t
+            if self.contains(point, padding=0.1):
+                return True
+        return False
 
 
 class World:
@@ -14,6 +38,7 @@ class World:
         self.locations = {loc["id"]: loc for loc in json.loads(locations_path.read_text(encoding="utf-8"))}
         self.npcs = [NPC.from_dict(n) for n in json.loads(npcs_path.read_text(encoding="utf-8"))]
         self.npc_by_id = {npc.id: npc for npc in self.npcs}
+        self.blockers: list[Blocker] = []
         self.officer_node = None
         self._setup_lighting()
         self._build_ground()
@@ -31,13 +56,15 @@ class World:
         self.app.render.set_light(sun_np)
         self.app.set_background_color(0.55, 0.66, 0.72)
 
-    def _cube(self, name: str, pos, scale, color):
+    def _cube(self, name: str, pos, scale, color, blocks: bool = False):
         node = self.app.loader.load_model("models/box")
         node.reparent_to(self.app.render)
         node.set_name(name)
         node.set_pos(*pos)
         node.set_scale(*scale)
         node.set_color(*color)
+        if blocks:
+            self.blockers.append(Blocker(name, pos[0] - scale[0], pos[0] + scale[0], pos[1] - scale[1], pos[1] + scale[1]))
         return node
 
     def _label(self, text: str, parent, pos, scale: float, color=(1, 1, 1, 1)):
@@ -72,21 +99,22 @@ class World:
         for loc in self.locations.values():
             x, y, z = loc["pos"]
             sx, sy, sz = loc["scale"]
-            self._cube(loc["name"], (x, y, z + sz), (sx, sy, sz), colors.get(loc["id"], (0.5, 0.5, 0.5, 1)))
+            blocks = loc["id"] in {"scholars_house", "printing_press"}
+            self._cube(loc["name"], (x, y, z + sz), (sx, sy, sz), colors.get(loc["id"], (0.5, 0.5, 0.5, 1)), blocks=blocks)
             self._label(loc["name"], self.app.render, (x, y, z + sz * 2 + 1.2), 1.25, (1, 0.93, 0.72, 1))
         self._build_palace_walls()
         self._build_bazaar_stalls()
 
     def _build_palace_walls(self) -> None:
-        self._cube("palace north wall", (28, 36, 1.5), (19, 0.6, 1.5), (0.62, 0.49, 0.34, 1))
-        self._cube("palace south wall", (28, 10, 1.5), (19, 0.6, 1.5), (0.62, 0.49, 0.34, 1))
-        self._cube("palace west wall", (9, 23, 1.5), (0.6, 13, 1.5), (0.62, 0.49, 0.34, 1))
-        self._cube("palace east wall", (47, 23, 1.5), (0.6, 13, 1.5), (0.62, 0.49, 0.34, 1))
-        self._cube("treasury marker", (39, 30, 1.2), (2.4, 2.4, 1.2), (0.18, 0.42, 0.52, 1))
+        self._cube("palace north wall", (28, 36, 1.5), (19, 0.6, 1.5), (0.62, 0.49, 0.34, 1), blocks=True)
+        self._cube("palace south wall", (28, 10, 1.5), (19, 0.6, 1.5), (0.62, 0.49, 0.34, 1), blocks=True)
+        self._cube("palace west wall", (9, 23, 1.5), (0.6, 13, 1.5), (0.62, 0.49, 0.34, 1), blocks=True)
+        self._cube("palace east wall", (47, 23, 1.5), (0.6, 13, 1.5), (0.62, 0.49, 0.34, 1), blocks=True)
+        self._cube("treasury marker", (39, 30, 1.2), (2.4, 2.4, 1.2), (0.18, 0.42, 0.52, 1), blocks=True)
 
     def _build_bazaar_stalls(self) -> None:
         for i, x in enumerate([-22, -15, -8, -1, 6]):
-            self._cube("bazaar stall", (x, -18 + (i % 2) * 5, 0.8), (2.2, 1.5, 0.8), (0.63, 0.22 + i * 0.08, 0.21, 1))
+            self._cube("bazaar stall", (x, -18 + (i % 2) * 5, 0.8), (2.2, 1.5, 0.8), (0.63, 0.22 + i * 0.08, 0.21, 1), blocks=True)
 
     def _build_npcs(self) -> None:
         npc_colors = {
@@ -122,3 +150,9 @@ class World:
     def location_of_player(self, player_pos: Vec3) -> str:
         closest = min(self.locations.values(), key=lambda loc: (Vec3(*loc["pos"]) - player_pos).length())
         return closest["name"]
+
+    def is_blocked(self, position: Vec3) -> bool:
+        return any(blocker.contains(position) for blocker in self.blockers)
+
+    def has_line_of_sight(self, start: Vec3, end: Vec3) -> bool:
+        return not any(blocker.intersects_segment(start, end) for blocker in self.blockers)

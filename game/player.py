@@ -30,11 +30,11 @@ class FirstPersonPlayer:
         props.set_cursor_hidden(False)
         self.app.win.request_properties(props)
 
-    def update(self, dt: float, paused: bool = False) -> None:
+    def update(self, dt: float, paused: bool = False, can_move_to=None) -> None:
         if paused:
             return
         self._mouse_look()
-        self._move(dt)
+        self._move(dt, can_move_to)
         height = self.crouch_height if self.input.keys["crouch"] else self.eye_height
         pos = self.node.get_pos()
         self.node.set_z(height)
@@ -53,7 +53,7 @@ class FirstPersonPlayer:
         self.pitch = max(-85, min(85, self.pitch - dy * config.MOUSE_SENSITIVITY))
         self.app.win.move_pointer(0, cx, cy)
 
-    def _move(self, dt: float) -> None:
+    def _move(self, dt: float, can_move_to=None) -> None:
         direction = Vec3(0, 0, 0)
         if self.input.keys["forward"]:
             direction.y += 1
@@ -73,7 +73,11 @@ class FirstPersonPlayer:
         forward = Vec3(-sin(h), cos(h), 0)
         right = Vec3(cos(h), sin(h), 0)
         delta = (right * direction.x + forward * direction.y) * speed * dt
-        new_pos = self.node.get_pos() + delta
-        new_pos.x = max(-58, min(58, new_pos.x))
-        new_pos.y = max(-58, min(58, new_pos.y))
-        self.node.set_pos(new_pos.x, new_pos.y, self.node.get_z())
+        pos = self.node.get_pos()
+        next_x = Vec3(max(-58, min(58, pos.x + delta.x)), pos.y, pos.z)
+        if can_move_to is None or can_move_to(next_x):
+            pos = next_x
+        next_y = Vec3(pos.x, max(-58, min(58, pos.y + delta.y)), pos.z)
+        if can_move_to is None or can_move_to(next_y):
+            pos = next_y
+        self.node.set_pos(pos.x, pos.y, self.node.get_z())

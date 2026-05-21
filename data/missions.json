@@ -3,18 +3,21 @@
     "id": "arrival_at_ghat",
     "title": "Arrival at the Ghat",
     "description": "Orient yourself after the KAALCHAKRA jump.",
-    "objectives": [{"text": "Reach the river ghat and speak to the boatman", "flag": "arrived_at_ghat"}],
+    "objectives": [{"text": "Speak to the boatman at the river ghat", "flag": "spoke_to_boatman"}],
     "required_flags": [],
-    "completion_flags": ["arrived_at_ghat"],
+    "completion_flags": ["spoke_to_boatman"],
     "next_mission": "gather_bazaar_clues"
   },
   {
     "id": "gather_bazaar_clues",
     "title": "Gather Bazaar Clues",
     "description": "Find a social route into the palace.",
-    "objectives": [{"text": "Visit the bazaar and printing press", "flag": "printer_agrees"}],
+    "objectives": [
+      {"text": "Enter the bazaar", "flag": "entered_bazaar"},
+      {"text": "Speak to the printer about palace protocol", "flag": "spoke_to_printer"}
+    ],
     "required_flags": [],
-    "completion_flags": ["printer_agrees"],
+    "completion_flags": ["entered_bazaar", "spoke_to_printer"],
     "next_mission": "speak_to_scholar"
   },
   {
@@ -30,8 +33,11 @@
     "id": "get_palace_access",
     "title": "Get Palace Access",
     "description": "Use print and reputation to reach the minister.",
-    "objectives": [{"text": "Get a palace pass from Minister Rahim", "flag": "palace_access_granted"}],
-    "required_flags": ["printed_invitation_ready"],
+    "objectives": [
+      {"text": "Return to the printer for a respectful invitation", "flag": "printed_invitation_ready"},
+      {"text": "Use the invitation to get a palace pass from Minister Rahim", "flag": "palace_access_granted"}
+    ],
+    "required_flags": ["scholar_recommended_agent"],
     "completion_flags": ["palace_access_granted"],
     "next_mission": "avoid_british_officer"
   },

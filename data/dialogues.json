@@ -5,7 +5,16 @@
       {
         "text": "A messenger looking for safe routes through the town.",
         "reply": "Then remember the ghat. When all roads close, water remains.",
-        "effects": {"trust": 12, "ripple": 0, "unlock_clues": ["return_route"], "set_flags": ["arrived_at_ghat"], "add_items": ["Boat Token"]}
+        "effects": {
+          "trust": 12,
+          "ripple": 0,
+          "unlock_clues": ["return_route"],
+          "set_flags": ["spoke_to_boatman"],
+          "add_items": ["Boat Token"],
+          "pestel_notes": [
+            {"category": "Environmental", "text": "The Hooghly river route is the least disruptive extraction path."}
+          ]
+        }
       },
       {
         "text": "I serve a future India that needs a hidden relic.",
@@ -25,7 +34,16 @@
       {
         "text": "The partition may weaken political unity and divide communities.",
         "reply": "You understand the wound without shouting. I will recommend you quietly.",
-        "effects": {"trust": 24, "ripple": 0, "unlock_clues": ["partition_context", "minister_route"], "set_flags": ["scholar_understands_agent"]}
+        "effects": {
+          "trust": 24,
+          "ripple": 0,
+          "unlock_clues": ["partition_context", "minister_route"],
+          "set_flags": ["scholar_understands_agent"],
+          "pestel_notes": [
+            {"category": "Political", "text": "The 1905 Partition of Bengal risks weakening political unity and dividing communities."},
+            {"category": "Social", "text": "Trust in Bengal depends on restraint, local knowledge, and avoiding future revelations."}
+          ]
+        }
       },
       {
         "text": "The British are fools and must be destroyed.",
@@ -50,7 +68,16 @@
       {
         "text": "A respectful invitation citing Professor Sen's recommendation.",
         "reply": "A clean line of ink opens more doors than a loud fist.",
-        "effects": {"trust": 18, "ripple": 0, "unlock_clues": ["invitation_protocol"], "set_flags": ["printer_agrees"]}
+        "effects": {
+          "trust": 18,
+          "ripple": 0,
+          "unlock_clues": ["invitation_protocol"],
+          "set_flags": ["spoke_to_printer", "printer_agrees"],
+          "pestel_notes": [
+            {"category": "Technological", "text": "The printing press can spread or contain information depending on wording."},
+            {"category": "Economic", "text": "Bazaar networks carry palace news faster than formal messengers."}
+          ]
+        }
       },
       {
         "text": "A forged imperial order from London.",
@@ -70,7 +97,15 @@
       {
         "text": "I carry a scholar's recommendation and seek only a private historical audience.",
         "reply": "Measured words. I can arrange a guarded audience.",
-        "effects": {"trust": 22, "suspicion": -4, "ripple": 0, "unlock_clues": ["nawab_protocol"]}
+        "effects": {
+          "trust": 22,
+          "suspicion": -4,
+          "ripple": 0,
+          "unlock_clues": ["nawab_protocol"],
+          "pestel_notes": [
+            {"category": "Legal", "text": "Palace access is governed by reputation, protocol, and written invitation."}
+          ]
+        }
       },
       {
         "text": "Because his treasury contains an object too dangerous for this era.",
@@ -115,7 +150,16 @@
       {
         "text": "Protect local dignity, avoid prophecy, and let people choose.",
         "reply": "Good. A controlled reputation casts a small shadow.",
-        "effects": {"trust": 28, "ripple": 4, "unlock_clues": ["kaal_rishi_path"], "set_flags": ["sage_guidance_received"]}
+        "effects": {
+          "trust": 28,
+          "ripple": 4,
+          "unlock_clues": ["kaal_rishi_path"],
+          "set_flags": ["sage_guidance_received"],
+          "pestel_notes": [
+            {"category": "Social", "text": "A controlled Kaal Rishi reputation works only when it protects local dignity."},
+            {"category": "Political", "text": "The agent must avoid becoming a public symbol that changes the anti-partition movement."}
+          ]
+        }
       },
       {
         "text": "Spread miracles so the Nawab fears me.",

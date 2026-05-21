@@ -23,7 +23,8 @@ class MissionManager:
             objectives.append(f"[{mark}] {obj['text']}")
         return f"{mission['title']}\n" + "\n".join(objectives)
 
-    def update(self) -> None:
+    def update(self) -> bool:
+        changed = False
         while True:
             mission = self.current
             completion_flags = set(mission.get("completion_flags", []))
@@ -33,5 +34,7 @@ class MissionManager:
                 if next_mission:
                     self.state.current_mission = next_mission
                     self.state.flags.add(f"mission_started:{next_mission}")
+                    changed = True
                     continue
             break
+        return changed

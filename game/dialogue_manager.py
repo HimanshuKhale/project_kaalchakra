@@ -35,6 +35,8 @@ class DialogueManager:
             self.state.add_item(item)
         for loc in effects.get("unlock_locations", []):
             self.state.unlocked_locations.add(loc)
+        for note in effects.get("pestel_notes", []):
+            self.state.add_journal_note(note["category"], note["text"])
         if effects.get("enemy_suspicion"):
             self.state.add_suspicion(effects["enemy_suspicion"])
         return option.get("reply", self.provider.get_reply(npc.id, option["text"], {"fallback_reply": npc.greeting}))

@@ -15,6 +15,14 @@ class GameState:
     unlocked_locations: set[str] = field(default_factory=lambda: {"river_ghat", "bazaar", "scholars_house", "printing_press"})
     inventory: list[str] = field(default_factory=lambda: ["Chrono Remote", "Historical Dossier", "Translation Lens"])
     trust: dict[str, int] = field(default_factory=dict)
+    journal: dict[str, list[str]] = field(default_factory=lambda: {
+        "Political": [],
+        "Economic": [],
+        "Social": [],
+        "Technological": [],
+        "Environmental": [],
+        "Legal": [],
+    })
     game_over: bool = False
     ending_id: str | None = None
 
@@ -34,6 +42,11 @@ class GameState:
     def remove_item(self, item: str) -> None:
         if item in self.inventory:
             self.inventory.remove(item)
+
+    def add_journal_note(self, category: str, note: str) -> None:
+        notes = self.journal.setdefault(category, [])
+        if note and note not in notes:
+            notes.append(note)
 
     def to_json(self) -> dict[str, Any]:
         data = asdict(self)

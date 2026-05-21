@@ -30,6 +30,7 @@ class KaalchakraApp(ShowBase):
         self.paused = False
         self.in_dialogue = False
         self.sprint_noise_timer = 0.0
+        self.suspicion_decay_timer = 0.0
 
         CameraRig(self)
         self.input = InputHandler(self)
@@ -42,6 +43,7 @@ class KaalchakraApp(ShowBase):
         self.ui = GameUI(self)
         self.current_npc = None
         self.detected_recently = False
+        self.ui.show_mission_banner(self.missions.current["title"])
 
         self.officer_ai = BritishOfficerAI(
             self.world.officer_node,
@@ -55,6 +57,8 @@ class KaalchakraApp(ShowBase):
     def _bind_controls(self) -> None:
         self.accept("e", self.interact)
         self.accept("tab", self.toggle_panel)
+        self.accept("j", self.toggle_journal)
+        self.accept("f3", self.toggle_debug)
         self.accept("escape", self.pause_or_quit)
         self.accept("f5", self.save_game)
         self.accept("f9", self.load_game)
@@ -65,11 +69,17 @@ class KaalchakraApp(ShowBase):
         dt = min(ClockObject.get_global_clock().get_dt(), 0.05)
         if not self.state.game_over and not self.paused:
             self.state.elapsed_time += dt
-            self.player.update(dt, paused=self.in_dialogue)
-            self.detected_recently = self.officer_ai.update(dt, self.player.node.get_pos(), self.input.keys["crouch"])
+            self.player.update(dt, paused=self.in_dialogue, can_move_to=lambda pos: not self.world.is_blocked(pos))
+            self.detected_recently = self.officer_ai.update(
+                dt,
+                self.player.node.get_pos(),
+                self.input.keys["crouch"],
+                line_of_sight_clear=self.world.has_line_of_sight,
+            )
             self._ambient_rules(dt)
             self._objective_triggers()
-            self.missions.update()
+            if self.missions.update():
+                self.ui.show_mission_banner(self.missions.current["title"])
             self._check_ending()
 
         prompt = ""
@@ -78,8 +88,10 @@ class KaalchakraApp(ShowBase):
             prompt = f"Press E to speak with {self.current_npc.name}"
         if self.detected_recently:
             prompt = "Captain Haines has spotted you. Break line of sight or crouch."
+        self.ui.show_warning("WANTED: Captain Haines has line of sight", self.detected_recently)
+        self.ui.update_radar(self.player.node.get_pos(), self.world.officer_node.get_pos(), self._mission_target_pos())
         if not self.state.game_over:
-            self.ui.update_hud(self.state, self.missions.objective_text(), prompt)
+            self.ui.update_hud(self.state, self.missions.objective_text(), prompt, dt)
         return task.cont
 
     def _ambient_rules(self, dt: float) -> None:
@@ -88,6 +100,11 @@ class KaalchakraApp(ShowBase):
             if self.sprint_noise_timer <= 0:
                 self.state.add_suspicion(4)
                 self.sprint_noise_timer = 1.0
+        self.suspicion_decay_timer = max(0.0, self.suspicion_decay_timer - dt)
+        officer_distance = (self.world.officer_node.get_pos() - self.player.node.get_pos()).length()
+        if not self.detected_recently and officer_distance > 18 and self.state.suspicion > 0 and self.suspicion_decay_timer <= 0:
+            self.state.add_suspicion(-1)
+            self.suspicion_decay_timer = 3.0
         if self.state.ripple >= config.RIPPLE_COLLAPSE:
             self.state.game_over = True
             self.state.ending_id = "chaotic_timeline" if "Shakti Crystal" in self.state.inventory else "failed_mission"
@@ -99,7 +116,7 @@ class KaalchakraApp(ShowBase):
         pos = self.player.node.get_pos()
         location = self.world.location_of_player(pos)
         if location == "River Ghat":
-            self.state.flags.add("arrived_at_ghat")
+            self.state.flags.add("entered_river_ghat")
         if location == "Bazaar":
             self.state.flags.add("entered_bazaar")
         if location == "Palace Outer Court" and "Palace Pass" in self.state.inventory:
@@ -132,7 +149,8 @@ class KaalchakraApp(ShowBase):
             return
         reply = self.dialogue.choose(self.current_npc, index)
         self._story_gate_rewards(self.current_npc.id)
-        self.missions.update()
+        if self.missions.update():
+            self.ui.show_mission_banner(self.missions.current["title"])
         self.ui.close_dialogue()
         self.in_dialogue = False
         self.player.capture_mouse()
@@ -159,10 +177,50 @@ class KaalchakraApp(ShowBase):
         if npc_id == "sage" and trust >= 25:
             self.state.flags.add("kaal_rishi_reputation")
 
+    def _mission_target_pos(self):
+        if self.state.current_mission == "get_palace_access" and "Printed Invitation" not in self.state.inventory:
+            printer = self.world.npc_by_id["printer"].node
+            return printer.get_pos() if printer else None
+        target_by_mission = {
+            "arrival_at_ghat": "boatman",
+            "gather_bazaar_clues": "printer",
+            "speak_to_scholar": "scholar",
+            "get_palace_access": "minister",
+            "avoid_british_officer": "minister",
+            "first_nawab_meeting": "nawab",
+            "escape_palace": "sage",
+            "meet_sage": "sage",
+            "build_kaal_rishi_reputation": "nawab",
+            "final_nawab_negotiation": "nawab",
+        }
+        npc_id = target_by_mission.get(self.state.current_mission)
+        if npc_id and self.world.npc_by_id[npc_id].node:
+            return self.world.npc_by_id[npc_id].node.get_pos()
+        if self.state.current_mission == "return_to_present":
+            return Vec3(*self.world.locations["river_ghat"]["pos"])
+        return None
+
     def toggle_panel(self) -> None:
         if self.state.game_over:
             return
         self.ui.toggle_panel(self.state, self.missions.objective_text())
+
+    def toggle_journal(self) -> None:
+        if self.state.game_over:
+            return
+        self.ui.toggle_journal(self.state)
+
+    def toggle_debug(self) -> None:
+        location = self.world.location_of_player(self.player.node.get_pos())
+        text = (
+            f"Mission: {self.state.current_mission}\n"
+            f"Location: {location}\n"
+            f"Ripple: {self.state.ripple}\n"
+            f"Suspicion: {self.state.suspicion}\n\n"
+            f"Inventory: {', '.join(self.state.inventory)}\n\n"
+            f"Flags:\n" + "\n".join(sorted(self.state.flags))
+        )
+        self.ui.toggle_debug(text)
 
     def pause_or_quit(self) -> None:
         if self.state.game_over:
@@ -171,9 +229,16 @@ class KaalchakraApp(ShowBase):
         self.paused = not self.paused
         if self.paused:
             self.player.release_mouse()
-            self.ui.show_message("Paused. Esc resumes. F5 saves. F9 loads.")
+            self.ui.show_message("Paused.")
+            self.ui.toggle_pause_menu(self.resume_game, self.save_game, self.load_game, self.userExit)
         else:
-            self.player.capture_mouse()
+            self.resume_game()
+
+    def resume_game(self) -> None:
+        self.paused = False
+        if self.ui.pause_menu:
+            self.ui.toggle_pause_menu(self.resume_game, self.save_game, self.load_game, self.userExit)
+        self.player.capture_mouse()
 
     def save_game(self) -> None:
         self.save_load.save(self.state, tuple(self.player.node.get_pos()))
@@ -190,6 +255,7 @@ class KaalchakraApp(ShowBase):
         self.dialogue.state = self.state
         self.officer_ai.state = self.state
         self.player.node.set_pos(*pos)
+        self.ui.show_mission_banner(self.missions.current["title"])
         self.ui.show_message("Game loaded.")
 
     def _check_ending(self) -> None:
