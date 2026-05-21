@@ -20,12 +20,17 @@ class FirstPersonPlayer:
         self.capture_mouse()
 
     def capture_mouse(self) -> None:
+        if not hasattr(self.app.win, "request_properties"):
+            return
         props = WindowProperties()
         props.set_cursor_hidden(True)
         self.app.win.request_properties(props)
-        self.app.win.move_pointer(0, self.app.win.get_x_size() // 2, self.app.win.get_y_size() // 2)
+        if hasattr(self.app.win, "move_pointer"):
+            self.app.win.move_pointer(0, self.app.win.get_x_size() // 2, self.app.win.get_y_size() // 2)
 
     def release_mouse(self) -> None:
+        if not hasattr(self.app.win, "request_properties"):
+            return
         props = WindowProperties()
         props.set_cursor_hidden(False)
         self.app.win.request_properties(props)
@@ -42,6 +47,8 @@ class FirstPersonPlayer:
         self.app.camera.set_hpr(self.heading, self.pitch, 0)
 
     def _mouse_look(self) -> None:
+        if self.app.mouseWatcherNode is None:
+            return
         if not self.app.mouseWatcherNode.has_mouse():
             return
         cx = self.app.win.get_x_size() // 2
@@ -51,7 +58,8 @@ class FirstPersonPlayer:
         dy = pointer.get_y() - cy
         self.heading -= dx * config.MOUSE_SENSITIVITY
         self.pitch = max(-85, min(85, self.pitch - dy * config.MOUSE_SENSITIVITY))
-        self.app.win.move_pointer(0, cx, cy)
+        if hasattr(self.app.win, "move_pointer"):
+            self.app.win.move_pointer(0, cx, cy)
 
     def _move(self, dt: float, can_move_to=None) -> None:
         direction = Vec3(0, 0, 0)
